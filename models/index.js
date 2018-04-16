@@ -1,4 +1,4 @@
-import user from './user';
-import product from './product';
+import { User } from './user';
+import { Product } from './product';
 
-module.exports = { user, product };
+export { User, Product };

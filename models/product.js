@@ -1,11 +1,5 @@
-class Product {
+export class Product {
     constructor(name) {
-        this.name = name;
-    }
-
-    print() {
-        return this.name;
+        console.log('Product module');
     }
 }
-
-module.exports = { Product };

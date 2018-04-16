@@ -4,7 +4,7 @@
   "description": "NodeJS Global Mentoring Program Q2 2018",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js --exec babel-node --presets env,stage-2",
+    "start": "nodemon app.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Emilia Pavlova",
