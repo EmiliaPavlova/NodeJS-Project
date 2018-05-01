@@ -1,8 +1,6 @@
 import http from 'http';
 
 import config from './config/config';
-import dirwatcher from './dirwatcher';
-import importer from './importer';
 import * as model from './models';
 
 const userModule = new model.User('User module');
@@ -18,8 +16,6 @@ const server = http.createServer((req, res) => {
 });
 
 console.log(config.name);
-console.log('dirwatcher', dirwatcher);
-console.log('importer', importer);
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}`);
