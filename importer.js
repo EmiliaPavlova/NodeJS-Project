@@ -1,18 +1,28 @@
-import EventEmitter from 'events';
-import fs from 'fs';
 import csv from 'fast-csv';
 
 export class Importer {
-    importFiles(file = './data/books.csv') {
-        const stream = fs.createReadStream(file);
-        const csvStream = csv()
-            .on("data", function(data){
-                 console.log(data);
-            })
-            .on("end", function(){
-                 console.log("done");
-            });
+    constructor(event) {
+        this.handleOnChangeEvent(event);
+    }
 
-        stream.pipe(csvStream);
+    handleOnChangeEvent(event) {
+        event.on('changed', (data) => {
+            console.log(event);
+            const result = this.this.transformData(data);
+            console.log(result);
+        })
+    }
+
+    transformData(filename) {
+        const stream = fs.createReadStream(file);
+            const csvStream = csv()
+                .on("data", function(data){
+                    console.log(data);
+                })
+                .on("end", function(){
+                    console.log("done");
+                });
+
+            stream.pipe(csvStream);
     }
 }
