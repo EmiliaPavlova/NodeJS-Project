@@ -1,4 +1,5 @@
 import csv from 'fast-csv';
+import fs from 'fs';
 
 export class Importer {
     constructor(event) {
@@ -8,13 +9,13 @@ export class Importer {
     handleOnChangeEvent(event) {
         event.on('changed', (data) => {
             console.log(event);
-            const result = this.this.transformData(data);
+            const result = this.transformData(data);
             console.log(result);
         })
     }
 
     transformData(filename) {
-        const stream = fs.createReadStream(file);
+        const stream = fs.createReadStream(filename);
             const csvStream = csv()
                 .on("data", function(data){
                     console.log(data);
