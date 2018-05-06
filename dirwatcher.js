@@ -28,7 +28,7 @@ export class DirWatcher {
     }
 
     readDirectory(path) {
-        const promise  =  new Promise((resolve, reject) => {
+        const promise = new Promise((resolve, reject) => {
             fs.readdir(path, (err, files) => {
                 if (err) {
                     reject('err: ', err);

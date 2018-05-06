@@ -3,15 +3,24 @@ import fs from 'fs';
 
 export class Importer {
     constructor(event) {
-        this.handleOnChangeEvent(event);
+        this.importEvent(event);
+        this.importEventAsync(event);
     }
 
-    handleOnChangeEvent(event) {
+    importEvent(event) {
         event.on('changed', (data) => {
-            console.log(event);
-            const result = this.transformData(data);
-            console.log(result);
-        })
+            this.transformData(data);
+        });
+    }
+
+    importEventAsync(event) {
+        const promise = new Promise((resolve, reject) => {
+            event.on('changed', (data) => {
+                resolve(this.transformData(data));
+            });
+        });
+
+        return promise;
     }
 
     transformData(filename) {
