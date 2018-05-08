@@ -4,35 +4,49 @@ import fs from 'fs';
 export class Importer {
     constructor(event) {
         this.importEvent(event);
-        this.importEventAsync(event);
     }
 
     importEvent(event) {
         event.on('changed', (data) => {
-            this.transformData(data);
+            for (const file of data) {
+                this.transformData(file);
+            }
+            this.transformDataAsync(data);
         });
-    }
-
-    importEventAsync(event) {
-        const promise = new Promise((resolve, reject) => {
-            event.on('changed', (data) => {
-                resolve(this.transformData(data));
-            });
-        });
-
-        return promise;
     }
 
     transformData(filename) {
         const stream = fs.createReadStream(filename);
             const csvStream = csv()
-                .on("data", function(data){
+                .on("data", (data) => {
                     console.log(data);
                 })
-                .on("end", function(){
+                .on("end", () => {
                     console.log("done");
                 });
 
             stream.pipe(csvStream);
+    }
+
+    transformDataAsync(data) {
+        let promises = [];
+        data.forEach((filename) => {
+            const stream = fs.createReadStream(filename)
+            const promise = new Promise((resolve, reject) => {
+                const csvStream = csv()
+                    .on("data", (data) => {
+                        console.log(data);
+                        resolve(data);
+                    })
+                    .on("end", () => {
+                        console.log("done");
+                    })
+                    stream.pipe(csvStream);
+                });
+
+            promises.push(promise);
+        })
+
+        Promise.all(promises);
     }
 }

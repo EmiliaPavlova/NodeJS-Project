@@ -6,9 +6,7 @@ export class DirWatcher {
         setInterval(async () => {
             const changes = await this.watch(path);
             if (changes.length > 0) {
-                for (const file of changes) {
-                    this.emitChange(event, file);
-                }
+                this.emitChange(event, changes);
             }
         }, delay);
         this.changedFiles = [];
@@ -16,7 +14,12 @@ export class DirWatcher {
     
     async watch(path) {
         let data = [];
-        let directory = await this.readDirectory(path);
+        let directory;
+        try {
+            directory = await this.readDirectory(path);
+        } catch (err) {
+            console.log(err);
+        }
         for (const file of directory) {
             const fileName = join(path, file);
             if (!this.changedFiles.find(name => name === fileName)) {
@@ -26,7 +29,7 @@ export class DirWatcher {
         };
         return data;
     }
-
+    
     readDirectory(path) {
         const promise = new Promise((resolve, reject) => {
             fs.readdir(path, (err, files) => {
