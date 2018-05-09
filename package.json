@@ -18,7 +18,7 @@
     "nodemon": "^1.17.3"
   },
   "dependencies": {
-    "fast-csv": "^2.4.1"
+    "csvtojson": "^1.1.12"
   },
   "babel": {
     "presets": [
