@@ -17,16 +17,16 @@ export class DirWatcher {
         let directory;
         try {
             directory = await this.readDirectory(path);
+            for (const file of directory) {
+                const fileName = join(path, file);
+                if (!this.changedFiles.find(name => name === fileName)) {
+                    this.changedFiles.push(fileName);
+                    data.push(fileName);
+                }
+            };
         } catch (err) {
             console.log(err);
         }
-        for (const file of directory) {
-            const fileName = join(path, file);
-            if (!this.changedFiles.find(name => name === fileName)) {
-                this.changedFiles.push(fileName);
-                data.push(fileName);
-            }
-        };
         return data;
     }
     
