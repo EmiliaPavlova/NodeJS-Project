@@ -17,7 +17,9 @@
     "babel-register": "^6.26.0",
     "nodemon": "^1.17.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "csvtojson": "^1.1.12"
+  },
   "babel": {
     "presets": [
       "env",
