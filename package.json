@@ -26,8 +26,5 @@
       "env",
       "stage-2"
     ]
-  },
-  "bin": {
-    "streams.js": "streams.js"
   }
 }

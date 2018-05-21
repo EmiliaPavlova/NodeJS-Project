@@ -1,94 +1,112 @@
-#!/usr/bin/env node
-// #!/c/Program Files/nodejs/env node
-'use strict';
+#!/c/Program Files/nodejs/env node
+// #!/usr/bin/env node
+// 'use strict';
 
 const program = require('commander');
 
-// import fs from 'fs';
+/*
+    let listFunction = (directory, options) => {
+    const cmd = 'ls';
+    let params = [];
+    if (options.all) params.push('a');
+    if (options.long) params.push('l');
+    let fullCommand = params.length 
+        ? cmd + ' -' + params.join('')
+        : cmd
+    if (directory) fullCommand += ' ' + directory;
 
-function reverse(str) {
-    // Make sure we got a filename on the command line.
-    if (process.argv.length < 3) {
-        console.log('Usage: node ' + process.argv[1] + ' FILENAME');
-        process.exit(1);
-    }
-    // Read the file and print its contents.
-    var fs = require('fs')
-        , filename = process.argv[2];
-    fs.readFile(filename, 'utf8', function(err, data) {
-        if (err) throw err;
-        console.log('OK: ' + filename);
-        console.log(data)
-    });
- }
-function transform(str) { /* ... */ }
-function outputFile(filePath) { /* ... */ }
-function convertFromFile(filePath) { /* ... */ }
-function convertToFile(filePath) { /* ... */ }
+    let execCallback = (error, stdout, stderr) => {
+        if (error) console.log("exec error: " + error);
+        if (stdout) console.log("Result: " + stdout);
+        if (stderr) console.log("shell error: " + stderr);
+    };
+    exec(fullCommand, execCallback);
+};
+*/
+
+let getAction = (action, file) => {
+    console.log(action);
+    // switch(action) {
+    //     case 'reverse':
+    //         reverseStringFunction(option)
+    //         break;
+    //     case 'transform':
+    //         break;
+    //     case 'outputFile':
+    //         break;
+    //     case 'convertFromFile':
+    //         break;
+    //     case 'convertToFile':
+    //         break;
+    //     default:
+    //         return;
+    // }
+}
+
+let getFile = (file) => {
+    console.log(file);
+}
+
+let reverseStringFunction = (string) => {
+    // TODO - reverse string data from process.stdin to process.stdout
+    console.log(string.split('').reverse().join(''));
+
+program
+    .command('reverse <str>')
+    .description('reverse string data from process.stdin to process.stdout')
+    .action((str) => {
+        reverseStringFunction(str);
+    })
+}
 
 /*
 program
-    .version('0.0.1')
-    .option('-o, --option','option description')
-    .option('-m, --more','we can have as many options as we want')
-    .option('-i, --input [optional]','optional user input')
-    .option('-I, --another-input <required>','required user input')
-    .parse(process.argv); // end with parse to parse through the input
+    .command('transform <str>')
+    .description('convert data from process.stdin to upper-cased data on process.stdout')
+    .action((str) => {
+        console.log('??');
+    })
+
+program
+    .command('outputFile <filePath>')
+    .description('pipe the given file provided by --file option to process.stdout')
+    .action((filePath) => {
+        console.log('??');
+    })
+
+program
+    .command('convertToFile <filePath>')
+    .description('pipe the given file provided by --file option to process.stdout')
+    .action((filePath) => {
+        console.log('??');
+    })
+
+program
+    .command('convertFromFile <filePath>')
+    .description('convert file provided by --file option from csv to json and output data to a result file with the same name but json extension')
+    .action((filePath) => {
+        console.log('??');
+    })
 */
 
 program
-    .version('0.0.1')
-    .option('-C, --chdir <path>', 'change the working directory')
-    .option('-c, --config <path>', 'set config path. defaults to ./deploy.conf')
-    .option('-T, --no-tests', 'ignore test hook')
-
-program
-    .command('setup')
-    .description('run remote setup commands')
-    .action(function() {
-    console.log('setup');
-});
-
-program
-    .command('exec <cmd>')
-    .description('run the given remote command')
-    .action(function(cmd) {
-    console.log('exec "%s"', cmd);
-});
-
-program
-    .command('teardown <dir> [otherDirs...]')
-    .description('run teardown commands')
-    .action(function(dir, otherDirs) {
-    console.log('dir "%s"', dir);
-    if (otherDirs) {
-        otherDirs.forEach(function (oDir) {
-        console.log('dir "%s"', oDir);
-        });
-    }
-});
-
-program
-    .command('*')
-    .description('deploy the given env')
-    .action(function(env) {
-    console.log('deploying "%s"', env);
-});
+  .version('0.1.0')
+//   .arguments('<action> [file]')
+  .option('-a, --action <action> [string]', 'Action to be performed', getAction)
+  .option('-f, --file <file>', 'File', getFile)
+//   .action( (action, file) => {
+//     cmdValue = action;
+//     envValue = file;
+//  });
+//   .parse(process.argv);
 
 program.parse(process.argv);
+// console.log('action:', cmdValue);
+// console.log('file:', envValue);
 
-/*
-program
-    .version('0.0.1')
-    .usage('<keywords>')
-    .parse(process.argv);
-
-if(!program.args.length) {
+if (!program.args.length) {
     program.help();
-} else {
-    console.log('Keywords: ' + program.args);
-}
-*/
+} 
 
 // https://tj.github.io/commander.js/
 // https://medium.freecodecamp.org/writing-command-line-applications-in-nodejs-2cf8327eee2
