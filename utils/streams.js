@@ -36,9 +36,23 @@ let getString = (string) => {
     return string;
 }
 
-let reverseStringFunction = (string) => {
+let reverseStringFunction = () => {
     // TODO - reverse string data from process.stdin to process.stdout
-    console.log(string.split('').reverse().join(''));
+    // console.log(string.split('').reverse().join(''));
+
+    // /*
+    var readline = require('readline');
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+    });
+
+    rl.on('line', function(line){
+        if(line == "expectedinput") console.log("got it!");
+        console.log(line);
+    })
+    // */
 }
 
 
@@ -57,7 +71,8 @@ program
 
 switch(program.action) {
     case 'reverse':
-        reverseStringFunction(program.string)
+        // reverseStringFunction(program.string)
+        reverseStringFunction()
         break;
     case 'transform':
         break;
@@ -71,9 +86,11 @@ switch(program.action) {
         return;
 }
 
-// if (!program.args.length) {
-//     program.help();
-// } 
+
+if (!program.args.length) {
+    console.log('Wrong input: no arguments provided');
+    program.help();
+} 
 
 // https://nodejs.org/api/process.html#process_process_stdin
 // https://tj.github.io/commander.js/
