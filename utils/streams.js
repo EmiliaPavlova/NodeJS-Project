@@ -1,28 +1,9 @@
 #!/c/Program Files/nodejs/env node
-// #!/usr/bin/env node
-// 'use strict';
 
+const csv = require("csvtojson");
+const fs = require('fs');
 const program = require('commander');
-
-/*
-    let listFunction = (directory, options) => {
-    const cmd = 'ls';
-    let params = [];
-    if (options.all) params.push('a');
-    if (options.long) params.push('l');
-    let fullCommand = params.length 
-        ? cmd + ' -' + params.join('')
-        : cmd
-    if (directory) fullCommand += ' ' + directory;
-
-    let execCallback = (error, stdout, stderr) => {
-        if (error) console.log("exec error: " + error);
-        if (stdout) console.log("Result: " + stdout);
-        if (stderr) console.log("shell error: " + stderr);
-    };
-    exec(fullCommand, execCallback);
-};
-*/
+const stream = require('stream');
 
 let getAction = (action) => {
     return action;
@@ -32,66 +13,97 @@ let getFile = (file) => {
     return file;
 }
 
-let getString = (string) => {
-    return string;
+let showHelp = () => {
+    program.help();
 }
 
 let reverseStringFunction = () => {
-    // TODO - reverse string data from process.stdin to process.stdout
-    // console.log(string.split('').reverse().join(''));
+    console.log('function to reverse string data from process.stdin to process.stdout');
 
-    // /*
-    var readline = require('readline');
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        terminal: false
-    });
-
-    rl.on('line', function(line){
-        if(line == "expectedinput") console.log("got it!");
-        console.log(line);
-    })
-    // */
+    process.stdin
+        .pipe(new stream.Transform({
+            transform: (chunk, encoding, callback) => {
+                callback(null, chunk.reverse())
+            }
+        }))
+        .pipe(process.stdout);
 }
 
+let transformDataToUpperCase = () => {
+    console.log('function to convert data from process.stdin to upper-cased data on process.stdout.');
+
+    process.stdin
+        .pipe(new stream.Transform({
+            transform: (chunk, encoding, callback) => {
+                callback(null, chunk.toString().toUpperCase())
+            }
+        }))
+        .pipe(process.stdout);
+}
+
+let outputFile = () => {
+    console.log('function that will use fs.createReadStream() to pipe the given file provided by --file option to process.stdout');
+
+    const pathFile = `./data/${program.file}`;
+    fs.createReadStream(pathFile)
+        .pipe(new stream.Transform({
+            transform: (chunk, encoding, callback) => {
+                callback(null, chunk.toString())
+            }
+        }))
+        .pipe(process.stdout);
+}
+
+let convertFromFile = () => {
+    console.log('convert file provided by --file option from csv to json and output data to process.stdout. Function should check that the passed file name is valid');
+
+    const pathFile = `./data/${program.file}`;
+    csv()
+        .fromFile(pathFile)
+        .then((jsonArrayObj) => { //when parse finished, result will be emitted here.
+            console.log(jsonArrayObj);
+        })
+    // fs.createReadStream(pathFile)
+    //     .pipe(fs.createWriteStream(file + '.json'));
+}
+
+let convertToFile = () => {
+    console.log('convert file provided by --file option from csv to json and output data to a result file with the same name but json extension. Function should check that the passed file name is valid and use fs.createWriteStream additionally');
+}
 
 program
     .version('0.1.0')
     .option('-a, --action <action>', 'Action to be performed', getAction)
-    .option('-s, --string [string]', 'String', getString)
-    .option('-f, --file [file]', 'File', getFile)
+    .option('-f, --file <file>', 'File', getFile)
+    .option('-h, --help', 'Help', showHelp)
     .parse(process.argv);
 
-// const action = process.argv[2].split('=')[1];
-// const file = process.argv[3].split('=')[1];
-// console.log(action, file);
-
-// program.parse(process.argv);
 
 switch(program.action) {
     case 'reverse':
-        // reverseStringFunction(program.string)
         reverseStringFunction()
         break;
     case 'transform':
+        transformDataToUpperCase();
         break;
     case 'outputFile':
+        outputFile(program.file);
         break;
     case 'convertFromFile':
+        convertFromFile()
         break;
     case 'convertToFile':
+        convertToFile();
         break;
     default:
         return;
 }
 
+console.log('program.args', program.args);
 
-if (!program.args.length) {
-    console.log('Wrong input: no arguments provided');
-    program.help();
-} 
+//if (!program.args.length) {
+ //   console.log('Wrong input: no arguments provided');
+ //   program.help();
+//} 
 
-// https://nodejs.org/api/process.html#process_process_stdin
-// https://tj.github.io/commander.js/
-// https://medium.freecodecamp.org/writing-command-line-applications-in-nodejs-2cf8327eee2
+// https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93
