@@ -1,9 +1,8 @@
-#!/c/Program Files/nodejs/env node
-
 const fs = require('fs');
 const program = require('commander');
 const stream = require('stream');
 const Converter = require("csvtojson").Converter;
+const https = require('https');
 
 const path = './data';
 
@@ -14,6 +13,10 @@ let getAction = (action) => {
 let getFile = (file) => {
     checkForFile();
     return file;
+}
+
+let getPath = (path) => {
+    return path;
 }
 
 let showHelp = () => {
@@ -32,8 +35,6 @@ let checkForFile = () => {
 }
 
 let reverseStringFunction = () => {
-    // console.log('function to reverse string data from process.stdin to process.stdout');
-
     process.stdin
         .pipe(new stream.Transform({
             transform: (chunk, encoding, callback) => {
@@ -44,8 +45,6 @@ let reverseStringFunction = () => {
 }
 
 let transformDataToUpperCase = () => {
-    // console.log('function to convert data from process.stdin to upper-cased data on process.stdout.');
-
     process.stdin
         .pipe(new stream.Transform({
             transform: (chunk, encoding, callback) => {
@@ -56,8 +55,6 @@ let transformDataToUpperCase = () => {
 }
 
 let outputFile = () => {
-    // console.log('function that will use fs.createReadStream() to pipe the given file provided by --file option to process.stdout');
-
     const pathFile = getFilePath(program.file);
     fs.createReadStream(pathFile)
         .pipe(new stream.Transform({
@@ -69,38 +66,73 @@ let outputFile = () => {
 }
 
 let convertFromFile = () => {
-    // console.log('convert file provided by --file option from csv to json and output data to process.stdout. Function should check that the passed file name is valid');
-
     const pathFile = getFilePath(program.file);
-    fs.createReadStream(pathFile).pipe(new Converter({})).pipe(process.stdout);
-
-    /*
-    csv()
-        .fromFile(pathFile)
-        .then((jsonObj)=>{
-            console.log(jsonObj);
-        })
-    */
+    fs.createReadStream(pathFile)
+        .pipe(new Converter({}))
+        .pipe(process.stdout);
 }
 
 let convertToFile = () => {
-    // console.log('convert file provided by --file option from csv to json and output data to a result file with the same name but json extension. Function should check that the passed file name is valid and use fs.createWriteStream additionally');
-
     const pathFile = getFilePath(program.file);
     const index = pathFile.lastIndexOf('.csv');
     const newFile = `${pathFile.substring(0, index)}.json`;
     const writeStream = fs.createWriteStream(newFile);
 
-    fs.createReadStream(pathFile).pipe(new Converter({})).pipe(writeStream);
+    fs.createReadStream(pathFile)
+        .pipe(new Converter({}))
+        .pipe(writeStream);
+}
+
+let getAllFiles = () => {
+    const allFiles = fs.readdirSync(program.path);
+    const writeStream = fs.createWriteStream(`${program.path}/bundle.css`);
+    allFiles.map(file => {
+        if (fs.statSync(program.path).isDirectory()) {
+            fs.createReadStream(`${program.path}/${file}`)
+                .pipe(new stream.Transform({
+                    transform: (chunk, encoding, callback) => {
+                        callback(null, chunk.toString() + '\n\n')
+                    }
+                }))
+                .pipe(writeStream);
+        } else {
+            console.log('Not a directory');
+        }
+    })
+}
+
+let readDataFromUrl = () => {
+    const url = 'https://epa.ms/nodejs18-hw3-css';
+    https.get(url, (res) => {
+        // console.log('statusCode:', res.statusCode);
+        // console.log('headers:', res.headers);
+
+        let rawData = '';
+        res.on('data', (chunk) => {
+            rawData += chunk;
+        });
+        console.log(rawData);
+
+      }).on('error', (e) => {
+        console.error(e);
+      });
+}
+
+let createCssBundler = () => {
+    if (`${program.path}/bundle.css`) {
+        fs.unlink(`${program.path}/bundle.css`);
+    }
+    getAllFiles();
+    readDataFromUrl();
 }
 
 program
     .version('0.1.0')
     .option('-a, --action <action>', 'Action to be performed', getAction)
     .option('-f, --file <file>', 'File', getFile)
+    .option('-p, --path <path>', 'Path', getPath)
     .option('-h, --help', 'Help', showHelp)
     .parse(process.argv);
-
 
 switch(program.action) {
     case 'reverse':
@@ -110,7 +142,7 @@ switch(program.action) {
         transformDataToUpperCase();
         break;
     case 'outputFile':
-        outputFile(program.file);
+        outputFile();
         break;
     case 'convertFromFile':
         convertFromFile()
@@ -118,11 +150,12 @@ switch(program.action) {
     case 'convertToFile':
         convertToFile();
         break;
+    case 'cssBundler':
+        createCssBundler();
+        break;
     default:
         console.error('Error: no such command!');
-        process.exit(1);
+        process.exit();
 }
-
-// console.log('program.args', program.args);
 
 // https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93
