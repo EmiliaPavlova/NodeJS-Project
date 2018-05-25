@@ -12,6 +12,7 @@ let getAction = (action) => {
 }
 
 let getFile = (file) => {
+    checkForFile();
     return file;
 }
 
@@ -21,6 +22,13 @@ let showHelp = () => {
 
 let getFilePath = (file) => {
     return `./data/${file}`;
+}
+
+let checkForFile = () => {
+    if (!program.file) {
+        console.log('Wrong input: no such file');
+        process.exit();
+    }
 }
 
 let reverseStringFunction = () => {
@@ -116,10 +124,5 @@ switch(program.action) {
 }
 
 // console.log('program.args', program.args);
-
-// if (!program.args.length) {
-//    console.log('Wrong input: no arguments provided');
-//    program.help();
-// } 
 
 // https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93
