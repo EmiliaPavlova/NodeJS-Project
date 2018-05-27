@@ -103,18 +103,16 @@ let getAllFiles = () => {
 
 let readDataFromUrl = () => {
     const url = 'https://epa.ms/nodejs18-hw3-css';
-    https.get(url, (res) => {
-        // console.log('statusCode:', res.statusCode);
-        // console.log('headers:', res.headers);
-
-        let rawData = '';
-        res.on('data', (chunk) => {
-            rawData += chunk;
+    https.get(url, (resp) => {
+        let data = '';
+        resp.on('data', (chunk) => {
+          data += chunk;
         });
-        console.log(rawData);
-
-      }).on('error', (e) => {
-        console.error(e);
+        resp.on('end', () => {
+          console.log(JSON.parse(data).explanation);
+        });
+      }).on("error", (err) => {
+        console.log("Error: " + err.message);
       });
 }
 
