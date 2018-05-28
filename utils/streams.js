@@ -3,8 +3,12 @@ const program = require('commander');
 const stream = require('stream');
 const Converter = require("csvtojson").Converter;
 const https = require('https');
+const readline = require('readline');
+const { google } = require('googleapis');
 
 const path = './data';
+const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+const TOKEN_PATH = 'credentials.json';
 
 let getAction = (action) => {
     return action;
@@ -87,41 +91,105 @@ let getAllFiles = () => {
     const allFiles = fs.readdirSync(program.path);
     const writeStream = fs.createWriteStream(`${program.path}/bundle.css`);
     allFiles.map(file => {
-        if (fs.statSync(program.path).isDirectory()) {
-            fs.createReadStream(`${program.path}/${file}`)
-                .pipe(new stream.Transform({
-                    transform: (chunk, encoding, callback) => {
-                        callback(null, chunk.toString() + '\n\n')
-                    }
-                }))
-                .pipe(writeStream);
-        } else {
-            console.log('Not a directory');
+        if (file !== 'bundle.css') {
+            if (fs.statSync(program.path).isDirectory()) {
+                fs.createReadStream(`${program.path}/${file}`)
+                    .pipe(new stream.Transform({
+                        transform: (chunk, encoding, callback) => {
+                            callback(null, chunk.toString() + '\n\n')
+                        }
+                    }))
+                    .pipe(writeStream);
+            } else {
+                console.log('Not a directory');
+            }
         }
     })
 }
 
 let readDataFromUrl = () => {
-    const url = 'https://epa.ms/nodejs18-hw3-css';
-    https.get(url, (resp) => {
-        let data = '';
-        resp.on('data', (chunk) => {
-          data += chunk;
+    fs.readFile('client_secret.json', (err, content) => {
+        if (err) {
+            return console.log('Error loading client secret file: ', err);
+        }
+        // Authorize a client with credentials, then call the Google Drive API.
+        authorize(JSON.parse(content), getFileId);
+    });
+}
+
+let authorize = (credentials, callback) => {
+    const { client_secret, client_id, redirect_uris } = credentials.installed;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+
+    // Check if we have previously stored a token.
+    fs.readFile(TOKEN_PATH, (err, token) => {
+        if (err) {
+            return getAccessToken(oAuth2Client, callback);
+        }
+        oAuth2Client.setCredentials(JSON.parse(token));
+        callback(oAuth2Client);
+    });
+}
+
+let getAccessToken = (oAuth2Client, callback) => {
+    const authUrl = oAuth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: SCOPES,
+    });
+    console.log('Authorize this app by visiting this url:', authUrl);
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    const code = '4/AACskZnRGbGHmTehSnqdorozGsk4WxJ9nQRL3MS5O_oLEAf5mGNHM6o';
+    rl.question('Enter the code from that page here: ', (code) => {
+        rl.close();
+        console.log('code', code);
+        oAuth2Client.getToken(code, (err, token) => {
+            if (err) {
+                return callback(err);
+            }
+            oAuth2Client.setCredentials(token);
+            // Store the token to disk for later program executions
+            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+            if (err) {
+                console.error(err);
+            }
+            console.log('Token stored to', TOKEN_PATH);
+            });
+            callback(oAuth2Client);
         });
-        resp.on('end', () => {
-          console.log(JSON.parse(data).explanation);
-        });
-      }).on("error", (err) => {
-        console.log("Error: " + err.message);
-      });
+    });
+}
+
+let getFileId = (auth) => {
+    const drive = google.drive({version: 'v3', auth});
+    drive.files.list({
+        pageSize: 100,
+        fields: 'nextPageToken, files(id, name)',
+    }, (err, {data}) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        const files = data.files;
+        if (files.length) {
+            files.filter((file) => {
+                if (file.name === 'nodejs-homework3.css') {
+                    console.log(file.id);
+                    return file.id;
+                }
+            });
+        } else {
+            console.log('No files found.');
+        }
+    });
 }
 
 let createCssBundler = () => {
-    if (`${program.path}/bundle.css`) {
-        fs.unlink(`${program.path}/bundle.css`);
-    }
+    // if (`${program.path}/bundle.css`) {
+    //     fs.unlink(`${program.path}/bundle.css`);
+    // }
     getAllFiles();
-    readDataFromUrl();
+    // readDataFromUrl();
 }
 
 program
