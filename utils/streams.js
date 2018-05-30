@@ -89,7 +89,8 @@ let convertToFile = () => {
 
 let getAllCssFiles = () => {
     const allFiles = fs.readdirSync(program.path);
-    const writeStream = fs.createWriteStream(`${program.path}/bundle.css`);
+    const bundleFile = `${program.path}/bundle.css`;
+    const writeStream = fs.createWriteStream(bundleFile);
     allFiles.map(file => {
         if (file !== 'bundle.css') {
             if (fs.statSync(program.path).isDirectory()) {
@@ -114,7 +115,7 @@ let appendDataFromUrl = () => {
 
     https.get(url, (res) => {
         res.on('data', (data) => {
-            fs.appendFile(bundleFile, data);
+            fs.appendFileSync(bundleFile, data);
         });
     }).on('error', (err) => {
         console.error(err);
