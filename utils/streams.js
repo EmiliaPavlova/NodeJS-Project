@@ -87,7 +87,7 @@ let convertToFile = () => {
         .pipe(writeStream);
 }
 
-let getAllFiles = () => {
+let getAllCssFiles = () => {
     const allFiles = fs.readdirSync(program.path);
     const writeStream = fs.createWriteStream(`${program.path}/bundle.css`);
     allFiles.map(file => {
@@ -107,17 +107,26 @@ let getAllFiles = () => {
     })
 }
 
-let readDataFromUrl = () => {
-    const url = 'https://drive.google.com/uc?export=download&id=1tCm9Xb4mok4Egy2WjGqdYYkrGia0eh7X';
-    const writeStream = fs.createWriteStream(`${program.path}/bundle.css`);
+let appendDataFromUrl = () => {
+    // const url = 'https://drive.google.com/uc?export=download&id=1tCm9Xb4mok4Egy2WjGqdYYkrGia0eh7X';
+    const url = 'https://doc-0g-0s-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/c9p5kmr970ag13es18fno77gj5m3ql02/1527688800000/05195043963524607236/*/1tCm9Xb4mok4Egy2WjGqdYYkrGia0eh7X?e=download';
+    const bundleFile = `${program.path}/bundle.css`;
+
+    https.get(url, (res) => {
+        res.on('data', (data) => {
+            fs.appendFile(bundleFile, data);
+        });
+    }).on('error', (err) => {
+        console.error(err);
+    });
 }
 
 let createCssBundler = () => {
     // if (`${program.path}/bundle.css`) {
     //     fs.unlink(`${program.path}/bundle.css`);
     // }
-    getAllFiles();
-    readDataFromUrl();
+    getAllCssFiles();
+    appendDataFromUrl();
 }
 
 program
@@ -151,6 +160,3 @@ switch(program.action) {
         console.error('Error: no such command!');
         process.exit();
 }
-
-// https://developers.google.com/drive/api/v3/quickstart/nodejs
-// https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93
