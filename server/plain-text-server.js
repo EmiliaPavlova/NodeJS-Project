@@ -1,23 +1,19 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-  res.end('<h1>Hello World</h1>');
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
 });
 
-// server.on('clientError', (err, socket) => {
-//   socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-// });
 server.listen(3003);
 
 /*
 require('http')
-  .createServer()
-  .on('request', (req, res) => {
-    const { url, method } = req;
+  .createServer((req, res) => {
     res.writeHead(200, {
-      'Content-Type': 'text/html'
+      'Content-Type': 'text/plain'
     });
-    res.end('<h1>Hello World</h1>')
+    res.end('Hello World')
   })
   .listen(3003);
   */
