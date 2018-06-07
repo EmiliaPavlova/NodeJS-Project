@@ -11,10 +11,12 @@ const server = http
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
     // res.write(replacedFileContent);
-    fs.createReadStream('__dirname/' + file)
+    const readStream = fs.createReadStream('__dirname/' + file);
+    readStream.on('end', ()=> res.end());
+    readStream
       .pipe(new stream.Transform({
         transform: (chunk, encoding, callback) => {
-          callback(null, chunk.toString().replace('{message}', 'replaced message with \'message\''));
+          callback(null, chunk.toString().replace('{message}', 'replaced message o.O'));
         }
       }))
       .pipe(res);
