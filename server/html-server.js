@@ -10,6 +10,14 @@ const server = http
   .createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
+
+    res.on('error', (error) => {
+      console.log(error);
+    });
+    req.on('error', (error) => {
+      console.log(error);
+    });
+
     // res.write(replacedFileContent);
     const readStream = fs.createReadStream('__dirname/' + file);
     readStream.on('end', ()=> res.end());
