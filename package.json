@@ -4,7 +4,7 @@
   "description": "NodeJS Global Mentoring Program Q2 2018",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js --exec babel-node",
+    "start": "nodemon index.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Emilia Pavlova",
@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "commander": "^2.15.1",
+    "cookie-parser": "^1.4.3",
     "csvtojson": "^2.0.0",
+    "express": "^4.16.3",
     "https": "^1.0.0"
   },
   "babel": {
