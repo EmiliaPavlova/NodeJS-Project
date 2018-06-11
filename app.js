@@ -6,6 +6,11 @@ import { EventEmitter } from 'events';
 import { Importer } from './importer';
 import * as model from './models';
 
+import express from 'express';
+const app = express();
+
+app.get('/', (req, res) => res.send('Hello World!'));
+
 console.log(config.name);
 
 const userModule = new model.User('User module');
@@ -15,6 +20,7 @@ const event = new EventEmitter();
 new DirWatcher(event, './data', 1000);
 new Importer(event);
 
+/*
 const hostname = 'localhost';
 const port = 3003;
 
@@ -27,3 +33,6 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}`);
 });
+*/
+
+export default app;
