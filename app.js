@@ -7,6 +7,9 @@ import { Importer } from './importer';
 import * as model from './models';
 
 import express from 'express';
+// import routers from './routes/routers';
+const routers = require('./routes/routers');
+
 const app = express();
 
 app.get('/', (req, res) => res.send('Hello World!'));
