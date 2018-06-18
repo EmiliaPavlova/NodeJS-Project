@@ -5,9 +5,24 @@ import { DirWatcher } from './dirwatcher';
 import { EventEmitter } from 'events';
 import { Importer } from './importer';
 import * as model from './models';
-
+import routes from './routes/routers';
 import express from 'express';
+
+import cookieParser from './middlewares/cookie-parser-middleware';
+import queryParser from './middlewares/query-string-parser-middleware';
+
 const app = express();
+
+app.use(cookieParser);
+app.use(queryParser);
+
+app.use(function (req, res, next) {
+  console.log(req.parsedCookies);
+  console.log(req.parsedQuery);
+  next();
+});
+
+// routes(app);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

@@ -3,7 +3,7 @@ module.exports = (app) => {
     const changePassword = require('./api/users')(app);
 
     app.use('/', products);
-    app.use('/:id', products);
+    app.use('/api/products/:id', products);
     app.use('/:id/reviews', products);
     app.use('/', users);
 };
