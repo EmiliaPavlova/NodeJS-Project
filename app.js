@@ -10,6 +10,7 @@ import express from 'express';
 
 import cookieParser from './middlewares/cookie-parser-middleware';
 import queryParser from './middlewares/query-string-parser-middleware';
+// import routers from './routes/routers';
 
 const app = express();
 
