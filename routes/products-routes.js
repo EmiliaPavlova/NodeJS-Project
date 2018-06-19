@@ -1,14 +1,18 @@
 const express = require('express');
 
-module.exports = (app, data) => {
-    const router = new express.Router();
-    const controller = require('../controllers/products-controller').init(data);
+module.exports = (app) => {
+    app.get('/api/products',(req, res) => {
+        res.send('getAllProducts');
+    });
+    app.post('/api/products',(req, res) => {
+        res.send('addProduct');
+    });
+    app.get('/api/products/:id',(req, res) => {
+        res.send('getProductById for id ' + req.params.id);
+    });
+    app.get('/api/products/:id/reviews',(req, res) => {
+        res.send('getProductByIdReviews for id ' + req.params.id);
+    });
 
-    router
-        .get('/products', controller.getAllProducts)
-        .post('/products', controller.addProduct)
-        .get('/products/:id', controller.getProductById)
-        .get('/products/:id/reviews', controller.getProductByIdReviews)
-
-    return router;
+    return app;
 };

@@ -10,7 +10,7 @@ import express from 'express';
 
 import cookieParser from './middlewares/cookie-parser-middleware';
 import queryParser from './middlewares/query-string-parser-middleware';
-// import routers from './routes/routers';
+import routers from './routes/routers';
 
 const app = express();
 
@@ -18,12 +18,12 @@ app.use(cookieParser);
 app.use(queryParser);
 
 app.use(function (req, res, next) {
-  console.log(req.parsedCookies);
-  console.log(req.parsedQuery);
+  console.log('cookies', req.parsedCookies);
+  console.log('queries', req.parsedQuery);
   next();
 });
 
-// routes(app);
+routes(app);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
