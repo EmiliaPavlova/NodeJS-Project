@@ -1,11 +1,26 @@
-const express = require('express');
+const products = [{
+    id: 1,
+    name: 'Product 1',
+},
+{
+    id: 2,
+    name: 'Product 2',
+},
+{
+    id: 3,
+    name: 'Product 3',
+}];
 
 module.exports = (app) => {
     app.get('/api/products',(req, res) => {
-        res.send('getAllProducts');
+        res.send(products);
     });
     app.post('/api/products',(req, res) => {
-        res.send('addProduct');
+        const product = req.body;
+        product.id = products.length + 1;
+        products.push(product);
+        res.status(201)
+            .send(product);
     });
     app.get('/api/products/:id',(req, res) => {
         res.send('getProductById for id ' + req.params.id);

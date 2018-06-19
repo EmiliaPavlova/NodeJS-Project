@@ -10,16 +10,18 @@ import express from 'express';
 
 import cookieParser from './middlewares/cookie-parser-middleware';
 import queryParser from './middlewares/query-string-parser-middleware';
+import bodyParser from 'body-parser';
 import routers from './routes/routers';
 
 const app = express();
 
 app.use(cookieParser);
 app.use(queryParser);
+app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
-  console.log('cookies', req.parsedCookies);
-  console.log('queries', req.parsedQuery);
+  // console.log('cookies', req.parsedCookies);
+  // console.log('queries', req.parsedQuery);
   next();
 });
 
