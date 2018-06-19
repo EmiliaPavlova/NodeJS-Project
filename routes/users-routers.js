@@ -1,3 +1,5 @@
+const { Router } = require('express');
+
 const users = [{
     id: 1,
     name: 'Emi',
@@ -8,9 +10,13 @@ const users = [{
 }];
 
 module.exports = (app) => {
-    app.get('/api/users',(req, res) => {
+    const router = new Router();
+
+    router.get('/',(req, res) => {
         res.send(users);
     });
+
+    app.use('/api/users', router);
 
     return app;
 };
