@@ -12,7 +12,7 @@ const users = [{
 module.exports = (app) => {
     const router = new Router();
 
-    router.get('/',(req, res) => {
+    router.get('/', (req, res) => {
         res.send(users);
     });
 

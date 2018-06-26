@@ -1,4 +1,4 @@
-var cookieParserMiddleware = (req, res, next) => {
+const cookieParserMiddleware = (req, res, next) => {
     const parsedCookies = {};
 
     const cookie = req.headers.cookie;
@@ -10,7 +10,7 @@ var cookieParserMiddleware = (req, res, next) => {
     }
 
     req.parsedCookies = parsedCookies;
-    next()
+    next();
 }
 
 export default cookieParserMiddleware;
