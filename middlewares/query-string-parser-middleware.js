@@ -11,7 +11,7 @@ const queryStringParserMiddleware = (req, res, next) => {
     }
 
     req.parsedQuery = parsedQuery;
-    next()
+    next();
 }
 
 export default queryStringParserMiddleware;

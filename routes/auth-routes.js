@@ -1,5 +1,5 @@
 const { Router } = require('express');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const admins = [{
     id: 1,
@@ -16,32 +16,22 @@ module.exports = (app) => {
         const user = admins.find(user => user.username === username);
         if (user) {
             if (user.password === password) {
-                const token = jwt.sign({ user: 'wtf' }, 'shhhhh');
+                const token = jwt.sign({ user: req.body.username }, 'verysecret');
                 console.log(token)
                 res.send({
-                  code: 200,
-                  message: 'OK',
-                  data: {
-                      user: {
+                    user: {
                           username: user.username,
                           password: user.password,
-                      }
-                  },
-                  token: token,
+                      },
+                    token: token,
                });
             } else {
-                res.send({
-                  code: 404,
-                  message: 'Not Found',
-                  data: { error: 'Wrong password' }
-              });
+                res.status(404)
+                    .send('Wrong password');
             }
         } else {
-            res.send({
-              code: 404,
-              message: 'Not Found',
-              data: { error: 'No such user' }
-           });
+            res.status(404)
+                .send('No such user');
         }
     });
 

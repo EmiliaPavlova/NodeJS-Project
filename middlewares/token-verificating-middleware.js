@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
+
 const tokenVerificatingMiddleware = (req, res, next) => {
-    
-    next()
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, 'verysecret');
+    next();
 }
 
 export default tokenVerificatingMiddleware;
