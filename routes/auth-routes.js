@@ -37,13 +37,16 @@ module.exports = (app) => {
             }
         })
         .post('/login',
-            passport.authenticate('local',
-                { successRedirect: '/',
-                failureRedirect: '/login',
-                failureFlash: true,
-            })
-        );
-
+            passport.authenticate('local'),
+            (req, res) => res.json(req.user))
+        .get('/auth/facebook',
+            passport.authenticate('facebook'))
+        .get('/auth/facebook/callback',
+            passport.authenticate('facebook', { failureRedirect: '/login' }),
+            (req, res) => {
+              // Successful authentication, redirect home.
+              res.redirect('/');
+            });
 
     app.use('/', router);
 

@@ -3,8 +3,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { Strategy } from 'passport-local';
-
-import flash from 'connect-flash';
+import FacebookStrategy from 'passport-facebook';
 
 const configAuth = (app, data) => {
 
@@ -28,11 +27,23 @@ const configAuth = (app, data) => {
     }
   ));
 
+  passport.use(new FacebookStrategy.Strategy({
+    clientID: 184222018939823,
+    clientSecret: 'FACEBOOK_APP_SECRET',
+    callbackURL: "http://localhost:3003/auth/facebook/callback"
+  },
+    (accessToken, refreshToken, profile, cb) => {
+      const user = data.find({ facebookId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  ));
+  // https://scotch.io/tutorials/easy-node-authentication-facebook
+
   app.use(cookieParser());
   app.use(session({ secret: 'more secret' }));
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(flash());
 
   passport.serializeUser((user, done) => {
     done(null, user.id);
