@@ -21,7 +21,7 @@ const data = [{
   password: '123456',
 }];
 
-require('./auth')(app, data);
+require('./auth/passport')(app, data);
 
 app.use(cookieParser);
 app.use(queryParser);
