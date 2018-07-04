@@ -15,6 +15,14 @@ import routers from './routes/routers';
 
 const app = express();
 
+const data = [{
+  id: 1,
+  username: 'admin',
+  password: '123456',
+}];
+
+require('./auth/passport')(app, data);
+
 app.use(cookieParser);
 app.use(queryParser);
 app.use(bodyParser.json());

@@ -1,4 +1,4 @@
-var queryStringParserMiddleware = (req, res, next) => {
+const queryStringParserMiddleware = (req, res, next) => {
     const parsedQuery = {};
 
     const queryIndex = req.url.lastIndexOf('?');
@@ -11,7 +11,7 @@ var queryStringParserMiddleware = (req, res, next) => {
     }
 
     req.parsedQuery = parsedQuery;
-    next()
+    next();
 }
 
 export default queryStringParserMiddleware;

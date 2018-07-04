@@ -1,4 +1,4 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
 const users = [{
     id: 1,
@@ -12,7 +12,7 @@ const users = [{
 module.exports = (app) => {
     const router = new Router();
 
-    router.get('/',(req, res) => {
+    router.get('/', (req, res) => {
         res.send(users);
     });
 
