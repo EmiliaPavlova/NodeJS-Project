@@ -30,7 +30,8 @@
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "postgresql": "0.0.1",
-    "sequelize": "^4.38.0"
+    "sequelize": "^4.38.0",
+    "sequelize-cli": "^4.0.0"
   },
   "babel": {
     "presets": [

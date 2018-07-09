@@ -1,6 +1,6 @@
 import http from 'http';
 
-import config from './config/config';
+import config from './config/app';
 import { DirWatcher } from './dirwatcher';
 import { EventEmitter } from 'events';
 import { Importer } from './importer';
