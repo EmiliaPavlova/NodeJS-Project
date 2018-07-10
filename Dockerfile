@@ -17,5 +17,6 @@ EXPOSE 8008
 # Creates a mount point
 VOLUME [ "/app" ]
 
+# https://www.youtube.com/watch?v=A8dErdDMqb0
 # https://buddy.works/guides/how-dockerize-node-application
 # https://medium.com/@nickpeleh/dockerizing-a-node-js-web-app-with-redis-and-postgresql-60ddc697b44
