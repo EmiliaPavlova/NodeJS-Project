@@ -1,7 +1,8 @@
 Create a Postgres docker container:
-docker run --name [node-db-postgres] -e POSTGRES_PASSWORD=123456 -d postgres
+docker run --name node-db-postgres -e POSTGRES_PASSWORD=123456 -d postgres
 
 docker ps
+docker start node-db-postgres
 docker stop [CONTAINER ID]
 
 docker exec -it node-db-postgres psql -U postgres
