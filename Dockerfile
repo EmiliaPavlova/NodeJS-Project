@@ -1,12 +1,12 @@
 FROM node:8-slim
 
-# Working directory for application
-WORKDIR /app
+RUN mkdir /nodeApp
+ADD . /nodeApp
+WORKDIR /nodeApp
 
-# Copy application to /app directory and install dependencies
-COPY package.json /app
+# Copy application to /nodeApp directory and install dependencies
+COPY package.json /nodeApp
 RUN npm install
-COPY . /app
 
 # What should be executed when the Docker image is launching
 CMD node index.js
@@ -15,7 +15,7 @@ CMD node index.js
 EXPOSE 8008
 
 # Creates a mount point
-VOLUME [ "/app" ]
+VOLUME [ "/nodeApp" ]
 
 # https://www.youtube.com/watch?v=A8dErdDMqb0
 # https://buddy.works/guides/how-dockerize-node-application

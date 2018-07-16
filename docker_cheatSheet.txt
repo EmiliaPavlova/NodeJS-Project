@@ -45,3 +45,8 @@ Automate:
 docker run --name nodejsmentoringprogram -v "$PWD"/:/app -e POSTGRES_PASWORD=123456 -d postgres
 docker exec -it nodejsmentoringprogram psql -U postgres -c "CREATE DATABASE node_db;"
 docker exec -it nodejsmentoringprogram psql -U postgres -f /script_node.sql
+
+
+https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
+http://docs.sequelizejs.com/manual/installation/getting-started
+http://docs.sequelizejs.com/manual/tutorial/migrations.html

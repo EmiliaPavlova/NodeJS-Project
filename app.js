@@ -4,7 +4,7 @@ import config from './config/app';
 import { DirWatcher } from './dirwatcher';
 import { EventEmitter } from 'events';
 import { Importer } from './importer';
-import * as model from './models';
+// import * as model from './models';
 import routes from './routes/routers';
 import express from 'express';
 
@@ -12,6 +12,7 @@ import cookieParser from './middlewares/cookie-parser-middleware';
 import queryParser from './middlewares/query-string-parser-middleware';
 import bodyParser from 'body-parser';
 import routers from './routes/routers';
+import models from "./db/postgres"
 
 const app = express();
 
@@ -39,8 +40,8 @@ app.get('/', (req, res) => res.send('Hello World!'));
 
 console.log(config.name);
 
-const userModule = new model.User('User module');
-const productModule = new model.Product('Product module');
+// const userModule = new model.User('User module');
+// const productModule = new model.Product('Product module');
 const event = new EventEmitter();
 
 new DirWatcher(event, './data', 1000);
