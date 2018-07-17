@@ -1,20 +1,13 @@
-import sequelize from 'sequelize';
-
-const Product = sequelize.define('product', {
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: Sequelize.REAL
-  },
-});
-
-// force: true will drop the table if it already exists
-Product.sync({force: true}).then(() => {
-  // Table created
-  return Product.create({
-    name: 'Product',
-    price: 0.5
+module.exports = (sequelize, DataTypes) => {
+  const Product = sequelize.define('Product', {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    price: DataTypes.DECIMAL
   });
-});
+  Product.associate = (models) => {
+    // associations can be defined here
+  };
+  return Product;
+};
