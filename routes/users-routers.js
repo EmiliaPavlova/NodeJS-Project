@@ -1,20 +1,10 @@
 import { Router } from 'express';
 
-const users = [{
-    id: 1,
-    name: 'Emi',
-},
-{
-    id: 2,
-    name: 'Nadeto',
-}];
-
 module.exports = (app) => {
     const router = new Router();
+    const controller = require('../controllers').users;
 
-    router.get('/', (req, res) => {
-        res.send(users);
-    });
+    router.get('/', controller.getAllUsers);
 
     app.use('/api/users', router);
 

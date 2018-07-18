@@ -34,7 +34,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-routes(app);
+// routes(app);
+require('./routes/routers')(app);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

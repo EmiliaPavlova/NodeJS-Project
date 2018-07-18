@@ -13,7 +13,15 @@ module.exports = {
       },
       price: {
         type: Sequelize.DECIMAL
-      }
+      },
+      createdAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Products')

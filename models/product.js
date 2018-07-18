@@ -1,13 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     name: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     price: DataTypes.DECIMAL
   });
   Product.associate = (models) => {
-    // associations can be defined here
+    Product.hasMany(models.Review, {
+      foreignKey: 'productId',
+      as: 'reviews',
+    });
   };
   return Product;
 };

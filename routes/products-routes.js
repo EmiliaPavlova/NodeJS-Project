@@ -1,47 +1,19 @@
 import { Router } from 'express';
 
-const products = [{
-    id: 1,
-    name: 'Product 1',
-},
-{
-    id: 2,
-    name: 'Product 2',
-},
-{
-    id: 3,
-    name: 'Product 3',
-}];
-
-module.exports = (app) => {
+module.exports = (app, data) => {
     const router = new Router();
+    const controller = require('../controllers').products;
 
     router
-        .get('/', (req, res) => {
-            res.send(products);
-        })
-        .post('/', (req, res) => {
-            const product = req.body;
-            product.id = products.length + 1;
-            products.push(product);
-            res.status(201)
-                .send(product);
-        })
-        .get('/:id', (req, res) => {
-            const id = parseInt(req.params.id, 10);
-            const product = products.find(p => p.id === id);
-            if (!product) {
-                res.send('No such product');
-            }
-            res.send(product);
-        })
-        .get('/:id/reviews', (req, res) => {
-            res.send('getProductByIdReviews for id ' + req.params.id);
-        });
+        .get('/', controller.getAllProducts)
+        .post('/', controller.createProduct)
+        .get('/:productId', controller.getProductById)
+        .get('/:productId/reviews', controller.getAllReviewsByProduct)
+        .post('/:productId/reviews', controller.createReview);
 
     app.use('/api/products', router);
-    app.use('/api/products/:id', router);
-    app.use('/api/products/:id/reviews', router);
+    app.use('/api/products/:productId', router);
+    app.use('/api/products/:productId/reviews', router);
 
     return app;
 };
