@@ -1,0 +1,20 @@
+Create a Postgres docker container:
+docker run --name node-db-postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=123456 postgres:alpine
+
+docker ps
+docker start node-db-postgres
+docker stop [CONTAINER ID]
+
+docker exec -it node-db-postgres psql -U postgres
+
+List containers
+docker container ls --all
+
+
+Connect to DB:
+postgres=#
+
+
+https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
+http://docs.sequelizejs.com/manual/installation/getting-started
+http://docs.sequelizejs.com/manual/tutorial/migrations.html
