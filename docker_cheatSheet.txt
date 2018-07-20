@@ -18,3 +18,8 @@ postgres=#
 https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
 http://docs.sequelizejs.com/manual/installation/getting-started
 http://docs.sequelizejs.com/manual/tutorial/migrations.html
+
+
+Create a MongoDB docker container:
+docker run --name node-db-mongo -d -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=123456 -v /C:/data/db mongo
+docker run --name some-mongo -v /C:/data/db -d mongo

@@ -12,7 +12,6 @@ import cookieParser from './middlewares/cookie-parser-middleware';
 import queryParser from './middlewares/query-string-parser-middleware';
 import bodyParser from 'body-parser';
 import routers from './routes/routers';
-import models from "./db/postgres"
 
 const app = express();
 
@@ -28,16 +27,24 @@ app.use(cookieParser);
 app.use(queryParser);
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
+app.use( (req, res, next) => {
   // console.log('cookies', req.parsedCookies);
   // console.log('queries', req.parsedQuery);
   next();
 });
 
+
 // routes(app);
 require('./routes/routers')(app);
 
 app.get('/', (req, res) => res.send('Hello World!'));
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 console.log(config.name);
 
