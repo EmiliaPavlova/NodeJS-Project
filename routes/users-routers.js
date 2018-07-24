@@ -1,12 +1,18 @@
 import { Router } from 'express';
+import { User } from '../models';
 
-module.exports = (app) => {
+module.exports = (app, data) => {
     const router = new Router();
-    const controller = require('../controllers').users;
 
-    router.get('/', controller.getAllUsers);
+    router
+        .get('/', (req, res) => User.find((err, users) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json(users)
+        }));
 
     app.use('/api/users', router);
 
-    return app;
+  return app;
 };

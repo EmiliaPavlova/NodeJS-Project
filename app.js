@@ -32,7 +32,7 @@ app.use( (req, res, next) => {
 // routes(app);
 require('./routes/routers')(app);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+// app.get('/', (req, res) => res.send('Hello World!'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
