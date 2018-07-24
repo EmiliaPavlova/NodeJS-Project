@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { User } from '../models';
 
-module.exports = (app, data) => {
+module.exports = (app) => {
     const router = new Router();
 
     router

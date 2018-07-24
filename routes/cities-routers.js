@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { City } from '../models';
 
-module.exports = (app, data) => {
+module.exports = (app) => {
     const router = new Router();
 
     router
@@ -35,21 +35,17 @@ module.exports = (app, data) => {
           res.json({ message: 'City created!' });
         })
       })
-      // .get('/:productId', (req, res) => {
-      //   console.log(req.params)
-      //   Product.findById(req.params.productId, (err, product) => {
-      //     if (err) {
-      //       res.send(err);
-      //     }
-      //     res.json(product);
-      //   });
-      // })
-      // // .get('/:productId/reviews', controller.getAllReviewsByProduct)
-      // // .post('/:productId/reviews', controller.createReview);
+      .get('/api/cities/:cityId', (req, res) => {
+        City.findById(req.params.cityId, (err, city) => {
+          if (err) {
+            res.send(err);
+          }
+          res.json(city);
+        });
+      });
 
     app.use('/', router);
-    // app.use('/api/products/:productId', router);
-    // app.use('/api/products/:productId/reviews', router);
+    app.use('/api/cities/:cityId', router);
 
     return app;
 };

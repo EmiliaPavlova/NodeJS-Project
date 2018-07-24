@@ -4,6 +4,5 @@ import { MongoClient } from 'mongodb';
 const connectionString = "mongodb://localhost:27017/node-db-mongo";
 
 const db = MongoClient.connect(connectionString);
-console.log(db);
 
 module.exports = db;

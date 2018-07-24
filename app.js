@@ -24,15 +24,11 @@ app.use(cookieParser);
 app.use(queryParser);
 app.use(bodyParser.json());
 
-app.use( (req, res, next) => {
-
+app.use((req, res, next) => {
   next();
 });
 
-// routes(app);
 require('./routes/routers')(app);
-
-// app.get('/', (req, res) => res.send('Hello World!'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -42,20 +38,5 @@ app.use((req, res, next) => {
 });
 
 console.log(config.name);
-
-const async = () => {
-  return Promise.resolve();
-};
-
-async()
-    .then(() => require('./db').init(config.connectionString))
-    .then((db) => require('./data').init(db))
-    .then((data) => require('./app').init(data))
-    .then((app) => {
-        app.set('port', port);
-        const server = http.createServer(app);
-        // require('./socketio').init(server);
-        server.listen(config.port, () => console.log(`Listening at: ${config.port}`));
-    });
 
 export default app;
