@@ -15,6 +15,7 @@ module.exports = (app) => {
             const product = new Product();
             product.name = req.body.name;
             product.price = req.body.price;
+            product.lastModifiedDate = Date.now;
             product.save((err) => {
                 if (err) {
                     res.send(err);
@@ -43,10 +44,19 @@ module.exports = (app) => {
                     }
                     let result = reviews.filter((review) => review.productId == dbProduct._id);
                     res.json(result);
-                })
-                
-            })
-    })
+                });
+        })
+        .delete('/:productId', (req, res) => {
+            const id = req.params.productId;
+            City.find({_id: id})
+              .remove((err) => {
+                if (err) {
+                  res.send(err);
+                }
+              res.json({ message: 'Product deleted!' });
+            });
+        });
+    });
 
   app.use('/api/products', router);
   app.use('/api/products/:productId', router);

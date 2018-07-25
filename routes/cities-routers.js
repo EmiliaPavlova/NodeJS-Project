@@ -28,11 +28,12 @@ module.exports = (app) => {
         city.capital = req.body.capital;
         city.location.lat = req.body.location.lat;
         city.location.long = req.body.location.long;
+        city.lastModifiedDate = Date.now;
         city.save((err) => {
           if (err) {
             res.send(err);
           }
-          res.json({ message: 'City created!' });
+          res.send({ message: 'City created!' });
         })
       })
       .get('/api/cities/:cityId', (req, res) => {
@@ -41,6 +42,32 @@ module.exports = (app) => {
             res.send(err);
           }
           res.json(city);
+        });
+      })
+      .put('/api/cities/:cityId', (req, res) => {
+        const city = new City();
+        const cityData = req.body;
+        const id = req.params.cityId;
+        City.findOneAndUpdate(
+          {_id: id},
+          cityData,
+          {upsert: true, new: true},
+          (err, city) => {
+            if (err) {
+              res.send(err);
+            }
+          city.set('lastModifiedDate', Date.now);
+          res.json(city);
+        });
+      })
+      .delete('/api/cities/:cityId', (req, res) => {
+        const id = req.params.cityId;
+        City.find({_id: id})
+          .remove((err) => {
+            if (err) {
+              res.send(err);
+            }
+          res.send({ message: 'City deleted!' });
         });
       });
 
