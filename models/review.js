@@ -1,15 +1,8 @@
-module.exports = (sequelize, DataTypes) => {
-  const Review = sequelize.define('Review', {
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }
-  }, {});
-  Review.associate = (models) => {
-    Review.belongsTo(models.Product, {
-      foreignKey: 'productId',
-      onDelete: 'CASCADE',
-    });
-  };
-  return Review;
-};
+import mongoose, { Schema } from 'mongoose';
+
+const ReviewSchema = new Schema({
+    productId: String,
+    content: String
+});
+
+module.exports = mongoose.model('Review', ReviewSchema);

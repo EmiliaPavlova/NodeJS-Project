@@ -1,12 +1,15 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  });
-  User.associate = (models) => {
-    // associations can be defined here
-  };
-  return User;
-};
+import mongoose, { Schema } from 'mongoose';
+
+const UserSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    unique: true
+  },
+  lastModifiedDate: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = mongoose.model('User', UserSchema);

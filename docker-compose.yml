@@ -26,21 +26,3 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
-
-# services:
-#   app: 
-#     image: emiliapavlova/nodeApp
-#     ports: 
-#       - 80:8008
-#     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; npm start'
-#     depends_on:
-#       - db
-#     environment:
-#       - DATABASE_URL=postgres://postgres:123456@db:5432/node-db-postgres
-#       - PORT=8008   
-#   db:
-#     image: postgres
-#     environment:
-#       - POSTGRES_USER=postgres
-#       - POSTGRES_PASSWORD=123456
-#       - POSTGRES_DB=node-db-postgres

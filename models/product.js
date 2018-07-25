@@ -1,16 +1,19 @@
-module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
+import mongoose, { Schema } from 'mongoose';
+
+const ProductSchema = new Schema({
     name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: [true, 'Name is required'],
+      unique: true
     },
-    price: DataTypes.DECIMAL
-  });
-  Product.associate = (models) => {
-    Product.hasMany(models.Review, {
-      foreignKey: 'productId',
-      as: 'reviews',
-    });
-  };
-  return Product;
-};
+    price: {
+      type: Number,
+      min: 0
+    },
+    lastModifiedDate: {
+      type: Date,
+      default: Date.now
+    }
+});
+
+module.exports = mongoose.model('Product', ProductSchema);
