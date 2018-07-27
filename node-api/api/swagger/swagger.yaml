@@ -18,24 +18,18 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
+  /:
     # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+    # x-swagger-router-controller: hello_world
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      description: Returns a random city
+      operationId: randomCity
+      parameters: []
       responses:
         "200":
           description: Success
-        default:
-          description: Error
+          schema:
+            $ref: "#/definitions/City"
   /api/users:
     get:
       description: Returns all users
@@ -46,7 +40,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/User"
-
   /api/users/{id}:
     delete:
       description: Deletes a user by id
@@ -60,9 +53,8 @@ paths:
       responses:
         "200":
           description: User deleted!
-
   /api/products:
-     get:
+    get:
       description: Returns all products
       operationId: getProducts
       parameters: []
@@ -73,7 +65,7 @@ paths:
             $ref: "#/definitions/Product"
     post:
       description: Adds a new product
-      operationId: addProducts
+      operationId: addProduct
       parameters:
         - name: name
           in: body
@@ -91,14 +83,135 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/Product"
-
   /api/products/{id}:
-
-  /api/products/{id}/reviews
-
+    get:
+      description: Gets a product by id
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the product to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+    delete:
+      description: Deletes a product by id
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          description: The id of the product to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Product deleted!
+  /api/products/{id}/reviews:
+    get:
+      description: Gets all reviews for a product by id
+      operationId: getProductReviews
+      parameters:
+        - name: id
+          in: path
+          description: The id of the product whom reviews to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Review"
   /api/cities:
-
+    get:
+      description: Returns all cities
+      operationId: getCities
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    post:
+      description: Adds a new city
+      operationId: addCity
+      parameters:
+        - name: name
+          in: body
+          description: The name of the city to be added
+          required: true
+          type: string
+        - name: country
+          in: body
+          description: The country of the city to be added
+          required: true
+          type: string
+        - name: capital
+          in: body
+          description: Is the city to be added capical or not
+          required: true
+          type: boolean
+        - name: location
+          in: body
+          description: The location of the city to be added
+          required: false
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            long:
+              type: number
+              format: float
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
   /api/cities/{id}:
+    get:
+      description: Gets a city by id
+      operationId: getCityById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the city to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    put:
+      description: Updates a city by id
+      operationId: updateCityById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the city to update
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    delete:
+      description: Deletes a city by id
+      operationId: deleteCity
+      parameters:
+        - name: id
+          in: path
+          description: The id of the city to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: City deleted!
 
   /swagger:
     x-swagger-pipe: swagger_raw
@@ -151,8 +264,10 @@ definitions:
         properties:
           lat:
             type: number
+            format: float
           long:
             type: number
+            format: float
       lastModifiedDate:
         type: string
         format: date-time
