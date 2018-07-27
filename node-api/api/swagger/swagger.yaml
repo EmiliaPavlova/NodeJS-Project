@@ -34,27 +34,125 @@ paths:
       responses:
         "200":
           description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
         default:
           description: Error
+  /api/users:
+    get:
+      description: Returns all users
+      operationId: getUsers
+      parameters: []
+      responses:
+        "200":
+          description: Success
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/User"
+
+  /api/users/{id}:
+    delete:
+      description: Deletes a user by id
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: User deleted!
+
+  /api/products:
+     get:
+      description: Returns all products
+      operationId: getProducts
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+    post:
+      description: Adds a new product
+      operationId: addProducts
+      parameters:
+        - name: name
+          in: body
+          description: The name of the product to be added
+          required: true
+          type: string
+        - name: price
+          in: body
+          description: The price of the product to be added
+          required: false
+          type: number
+          format: float
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+
+  /api/products/{id}:
+
+  /api/products/{id}/reviews
+
+  /api/cities:
+
+  /api/cities/{id}:
+
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
+  User:
     required:
-      - message
+      - name
     properties:
-      message:
+      name:
         type: string
-  ErrorResponse:
+      lastModifiedDate:
+        type: string
+        format: date-time
+  Product:
     required:
-      - message
+      - name
     properties:
-      message:
+      name:
         type: string
+      price:
+        type: number
+        format: float
+      lastModifiedDate:
+        type: string
+        format: date-time
+  Review:
+    required:
+      - productId
+      - content
+    properties:
+      productId:
+        type: string
+      content:
+        type: string
+  City:
+    required:
+      - name
+      - country
+      - capital
+    properties:
+      name:
+        type: string
+      country:
+        type: string
+      capital:
+        type: boolean
+      location:
+        type: object
+        properties:
+          lat:
+            type: number
+          long:
+            type: number
+      lastModifiedDate:
+        type: string
+        format: date-time
