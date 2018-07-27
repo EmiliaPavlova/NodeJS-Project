@@ -1,0 +1,402 @@
+---
+swagger: "2.0"
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Node.js Mentoring Program
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /EmiliaPavlova/node.js_mentoring_program/1.0.0
+tags:
+- name: users
+  description: Operations with users
+- name: products
+  description: Operations with products
+- name: cities
+  description: Operations with cities
+schemes:
+- https
+paths:
+  /api/users:
+    get:
+      tags:
+      - users
+      summary: shows all users
+      description: |
+        Shows all users in the database
+      operationId: getUsers
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: shows all users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+          responseSchema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /api/users/{id}:
+    delete:
+      tags:
+      - users
+      summary: deletes a user
+      description: Deletes a user specified by id from the database
+      operationId: deleteUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The id of the user to be deleted
+        required: true
+        type: string
+      responses:
+        201:
+          description: user deleted
+  /api/products:
+    get:
+      tags:
+      - products
+      summary: shows all products
+      description: |
+        Shows all products in the database
+      operationId: getProducts
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: shows all products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+          responseSchema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+    post:
+      tags:
+      - products
+      summary: adds a new product
+      description: Adds a product in the database
+      operationId: addProduct
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: product
+        description: New product to add
+        required: false
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: product created
+  /api/products/{id}:
+    get:
+      tags:
+      - products
+      summary: shows a product by id
+      description: |
+        Shows the product with the given id
+      operationId: getProductById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The product with the given id
+        required: true
+        type: string
+      responses:
+        200:
+          description: shows the products
+          schema:
+            type: object
+          responseSchema:
+            type: object
+    delete:
+      tags:
+      - products
+      summary: deletes a product
+      description: Deletes a product specified by id from the database
+      operationId: deleteProduct
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The id of the product to be deleted
+        required: true
+        type: string
+      responses:
+        201:
+          description: product deleted
+  /api/products/{id}/reviews:
+    get:
+      tags:
+      - products
+      summary: shows all review of a product by id
+      description: |
+        Shows the reviews of a product with the given id
+      operationId: getProductReviews
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The reviews of the product by id
+        required: true
+        type: string
+      responses:
+        200:
+          description: shows the reviews
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Review'
+          responseSchema:
+            type: array
+            items:
+              $ref: '#/definitions/Review'
+  /:
+    get:
+      tags:
+      - cities
+      summary: shows arandom city
+      description: |
+        Shows a random city from the database
+      operationId: getRandomCity
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: shows a random city
+          schema:
+            type: object
+          responseSchema:
+            type: object
+  /api/cities:
+    get:
+      tags:
+      - cities
+      summary: shows all cities
+      description: |
+        Shows all cities in the database
+      operationId: getCities
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: shows all cities
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/City'
+          responseSchema:
+            type: array
+            items:
+              $ref: '#/definitions/City'
+    post:
+      tags:
+      - cities
+      summary: adds a new city
+      description: Adds a city in the database
+      operationId: addCity
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: city
+        description: New city to add
+        required: false
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: city created
+  /api/cities/{id}:
+    get:
+      tags:
+      - cities
+      summary: shows a city by id
+      description: |
+        Shows the city with the given id
+      operationId: getCityById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The city with the given id
+        required: true
+        type: string
+      responses:
+        200:
+          description: shows the city
+          schema:
+            type: object
+          responseSchema:
+            type: object
+    put:
+      tags:
+      - cities
+      summary: updates a city by id
+      description: |
+        Updates the city with the given id
+      operationId: updateCityById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The city with the given id to be edited
+        required: true
+        type: string
+      responses:
+        200:
+          description: shows the edited city
+          schema:
+            type: object
+          responseSchema:
+            type: object
+    delete:
+      tags:
+      - cities
+      summary: deletes a city
+      description: Deletes a city specified by id from the database
+      operationId: deleteCity
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: The id of the city to be deleted
+        required: true
+        type: string
+      responses:
+        201:
+          description: city deleted
+definitions:
+  User:
+    type: object
+    required:
+    - name
+    properties:
+      id:
+        type: string
+        example: 5b585a1b5470b24de5c26cac
+      name:
+        type: string
+        example: Mickey Mouse
+      lastModifiedDate:
+        type: string
+        format: int32
+        example: 2016-08-29T09:12:33.001Z
+    example:
+      lastModifiedDate: 2016-08-29T09:12:33.001Z
+      name: Mickey Mouse
+      id: 5b585a1b5470b24de5c26cac
+  Product:
+    type: object
+    required:
+    - name
+    properties:
+      id:
+        type: string
+        example: 5b585a1b5470b24de5c26cac
+      name:
+        type: string
+        example: Product 1
+      price:
+        type: integer
+        example: "10.5"
+      lastModifiedDate:
+        type: string
+        format: int32
+        example: 2016-08-29T09:12:33.001Z
+    example:
+      lastModifiedDate: 2016-08-29T09:12:33.001Z
+      price: "10.5"
+      name: Product 1
+      id: 5b585a1b5470b24de5c26cac
+  Review:
+    type: object
+    required:
+    - productId
+    properties:
+      id:
+        type: string
+        example: 5b585a1b5470b24de5c26cac
+      productId:
+        type: string
+        example: 5b5597e3205467c37ed5d8df
+    example:
+      productId: 5b5597e3205467c37ed5d8df
+      id: 5b585a1b5470b24de5c26cac
+  City:
+    type: object
+    required:
+    - capital
+    - country
+    - name
+    properties:
+      id:
+        type: string
+        example: 5b585a1b5470b24de5c26cac
+      name:
+        type: string
+        example: Brest
+      country:
+        type: string
+        example: Belarus
+      capital:
+        type: boolean
+        example: false
+      location:
+        $ref: '#/definitions/City_location'
+      lastModifiedDate:
+        type: string
+        format: int32
+        example: 2016-08-29T09:12:33.001Z
+    example:
+      country: Belarus
+      capital: false
+      lastModifiedDate: 2016-08-29T09:12:33.001Z
+      name: Brest
+      location:
+        lat: 52.097621
+        long: 23.73405
+      id: 5b585a1b5470b24de5c26cac
+  City_location:
+    properties:
+      lat:
+        type: number
+        example: 52.097621
+      long:
+        type: number
+        example: 23.73405
+    example:
+      lat: 52.097621
+      long: 23.73405
