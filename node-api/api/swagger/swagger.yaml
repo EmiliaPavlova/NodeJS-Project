@@ -19,8 +19,7 @@ produces:
   - application/json
 paths:
   /:
-    # binds a127 app logic to a route
-    # x-swagger-router-controller: hello_world
+    x-swagger-router-controller: city
     get:
       description: Returns a random city
       operationId: randomCity
@@ -31,6 +30,7 @@ paths:
           schema:
             $ref: "#/definitions/City"
   /api/users:
+    x-swagger-router-controller: user
     get:
       description: Returns all users
       operationId: getUsers
@@ -41,12 +41,13 @@ paths:
           schema:
             $ref: "#/definitions/User"
   /api/users/{id}:
+    x-swagger-router-controller: user
     delete:
       description: Deletes a user by id
       operationId: deleteUser
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the user to be deleted
           required: true
           type: string
@@ -54,6 +55,7 @@ paths:
         "200":
           description: User deleted!
   /api/products:
+    x-swagger-router-controller: product
     get:
       description: Returns all products
       operationId: getProducts
@@ -67,29 +69,32 @@ paths:
       description: Adds a new product
       operationId: addProduct
       parameters:
-        - name: name
-          in: body
-          description: The name of the product to be added
-          required: true
-          type: string
-        - name: price
-          in: body
-          description: The price of the product to be added
-          required: false
-          type: number
-          format: float
+        - in: body
+          name: product
+          description: The product to add
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              price:
+                type: number
+                format: float
       responses:
         "200":
           description: Success
           schema:
             $ref: "#/definitions/Product"
   /api/products/{id}:
+    x-swagger-router-controller: product
     get:
       description: Gets a product by id
       operationId: getProductById
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the product to show
           required: true
           type: string
@@ -102,8 +107,8 @@ paths:
       description: Deletes a product by id
       operationId: deleteProduct
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the product to be deleted
           required: true
           type: string
@@ -111,12 +116,13 @@ paths:
         "200":
           description: Product deleted!
   /api/products/{id}/reviews:
+    x-swagger-router-controller: product
     get:
       description: Gets all reviews for a product by id
       operationId: getProductReviews
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the product whom reviews to show
           required: true
           type: string
@@ -139,33 +145,31 @@ paths:
       description: Adds a new city
       operationId: addCity
       parameters:
-        - name: name
-          in: body
-          description: The name of the city to be added
-          required: true
-          type: string
-        - name: country
-          in: body
-          description: The country of the city to be added
-          required: true
-          type: string
-        - name: capital
-          in: body
-          description: Is the city to be added capical or not
-          required: true
-          type: boolean
-        - name: location
-          in: body
-          description: The location of the city to be added
-          required: false
-          type: object
-          properties:
-            lat:
-              type: number
-              format: float
-            long:
-              type: number
-              format: float
+        - in: body
+          name: city
+          description: The city to add
+          schema:
+            type: object
+            required:
+              - name
+              - country
+              - capital
+            properties:
+              name:
+                type: string
+              country:
+                type: string
+              capital:
+                type: boolean
+              location:
+                type: object
+                properties:
+                  lat:
+                    type: number
+                    format: float
+                  long:
+                    type: number
+                    format: float
       responses:
         "200":
           description: Success
@@ -176,8 +180,8 @@ paths:
       description: Gets a city by id
       operationId: getCityById
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the city to show
           required: true
           type: string
@@ -190,8 +194,8 @@ paths:
       description: Updates a city by id
       operationId: updateCityById
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the city to update
           required: true
           type: string
@@ -204,8 +208,8 @@ paths:
       description: Deletes a city by id
       operationId: deleteCity
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           description: The id of the city to be deleted
           required: true
           type: string
