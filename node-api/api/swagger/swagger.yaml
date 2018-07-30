@@ -1,0 +1,277 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Node.js Mentoring Program
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /:
+    x-swagger-router-controller: city
+    get:
+      description: Returns a random city
+      operationId: randomCity
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+  /api/users:
+    x-swagger-router-controller: user
+    get:
+      description: Returns all users
+      operationId: getUsers
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/User"
+  /api/users/{id}:
+    x-swagger-router-controller: user
+    delete:
+      description: Deletes a user by id
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: id
+          description: The id of the user to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: User deleted!
+  /api/products:
+    x-swagger-router-controller: product
+    get:
+      description: Returns all products
+      operationId: getProducts
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+    post:
+      description: Adds a new product
+      operationId: addProduct
+      parameters:
+        - in: body
+          name: product
+          description: The product to add
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              price:
+                type: number
+                format: float
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+  /api/products/{id}:
+    x-swagger-router-controller: product
+    get:
+      description: Gets a product by id
+      operationId: getProductById
+      parameters:
+        - in: path
+          name: id
+          description: The id of the product to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+    delete:
+      description: Deletes a product by id
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: id
+          description: The id of the product to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Product deleted!
+  /api/products/{id}/reviews:
+    x-swagger-router-controller: product
+    get:
+      description: Gets all reviews for a product by id
+      operationId: getProductReviews
+      parameters:
+        - in: path
+          name: id
+          description: The id of the product whom reviews to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Review"
+  /api/cities:
+    get:
+      description: Returns all cities
+      operationId: getCities
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    post:
+      description: Adds a new city
+      operationId: addCity
+      parameters:
+        - in: body
+          name: city
+          description: The city to add
+          schema:
+            type: object
+            required:
+              - name
+              - country
+              - capital
+            properties:
+              name:
+                type: string
+              country:
+                type: string
+              capital:
+                type: boolean
+              location:
+                type: object
+                properties:
+                  lat:
+                    type: number
+                    format: float
+                  long:
+                    type: number
+                    format: float
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Product"
+  /api/cities/{id}:
+    get:
+      description: Gets a city by id
+      operationId: getCityById
+      parameters:
+        - in: path
+          name: id
+          description: The id of the city to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    put:
+      description: Updates a city by id
+      operationId: updateCityById
+      parameters:
+        - in: path
+          name: id
+          description: The id of the city to update
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/City"
+    delete:
+      description: Deletes a city by id
+      operationId: deleteCity
+      parameters:
+        - in: path
+          name: id
+          description: The id of the city to be deleted
+          required: true
+          type: string
+      responses:
+        "200":
+          description: City deleted!
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  User:
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      lastModifiedDate:
+        type: string
+        format: date-time
+  Product:
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+        format: float
+      lastModifiedDate:
+        type: string
+        format: date-time
+  Review:
+    required:
+      - productId
+      - content
+    properties:
+      productId:
+        type: string
+      content:
+        type: string
+  City:
+    required:
+      - name
+      - country
+      - capital
+    properties:
+      name:
+        type: string
+      country:
+        type: string
+      capital:
+        type: boolean
+      location:
+        type: object
+        properties:
+          lat:
+            type: number
+            format: float
+          long:
+            type: number
+            format: float
+      lastModifiedDate:
+        type: string
+        format: date-time
